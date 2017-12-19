@@ -9,7 +9,7 @@ Key Derivation for Lisk coin
 Installation
 ------------
 
-    npm i --save lisk-hd-key
+    npm i --save @lisk-builders/lisk-hd-key
 
 
 Usage

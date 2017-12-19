@@ -1,5 +1,5 @@
 {
-  "name": "lisk-hd-key",
+  "name": "@lisk-builders/lisk-hd-key",
   "version": "0.5.0",
   "description": "HD key derivation for Lisk coin",
   "main": "dist/index.js",
@@ -40,6 +40,14 @@
   ],
   "author": "Aleksey Popov",
   "license": "GPL-3",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lisk-builders/lisk-hd-key.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lisk-builders/lisk-hd-key/issues"
+  },
+  "homepage": "https://github.com/lisk-builders/lisk-hd-key",
   "devDependencies": {
     "@types/jest": "^21.1.8",
     "ed25519-hd-key": "^0.5.0",
