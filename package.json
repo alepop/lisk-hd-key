@@ -49,13 +49,13 @@
   },
   "homepage": "https://github.com/lisk-builders/lisk-hd-key",
   "devDependencies": {
-    "@types/jest": "^21.1.8",
-    "jest-cli": "^22.0.0",
-    "ts-jest": "^21.2.4",
-    "typescript": "^2.6.2"
+    "@types/jest": "21.1.8",
+    "jest-cli": "22.0.0",
+    "ts-jest": "21.2.4",
+    "typescript": "2.6.2"
   },
   "dependencies": {
-    "ed25519-hd-key": "^0.5.0",
-    "lisk-js": "^0.5.0"
+    "ed25519-hd-key": "1.0.0",
+    "lisk-js": "0.5.1"
   }
 }
