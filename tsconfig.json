@@ -3,6 +3,9 @@
       "module": "commonjs",
       "target": "es6",
       "rootDir": "./src",
+      "lib": [
+        "es2017"
+      ],
       "outDir": "./dist",
       "noImplicitAny": false,
       "sourceMap": false,

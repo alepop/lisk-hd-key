@@ -33,7 +33,7 @@
     "ed25519",
     "bip32",
     "lisk",
-    "lisk-js",
+    "lisk-elements",
     "crypto",
     "hdkeys",
     "hdwallet"
@@ -50,12 +50,13 @@
   "homepage": "https://github.com/lisk-builders/lisk-hd-key",
   "devDependencies": {
     "@types/jest": "21.1.8",
-    "jest-cli": "22.0.0",
+    "jest-cli": "21.1.0",
     "ts-jest": "21.2.4",
     "typescript": "2.6.2"
   },
   "dependencies": {
+    "@types/node": "^10.0.3",
     "ed25519-hd-key": "1.0.0",
-    "lisk-js": "0.5.1"
+    "lisk-elements": "1.0.0-beta.3"
   }
 }
