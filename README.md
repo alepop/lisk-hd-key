@@ -14,7 +14,7 @@ Installation
 Examples
 -----
 
-**getPublicKey(path, seed)**
+**getPublicKey(path, seed)** <br>
 In this example we will get the public key for a Lisk address. The function should get the hexadecimal value of the given BIP39 seed.
 
 `seed`   A 256 bits hexadecimal string.
@@ -44,7 +44,7 @@ const publicKey = getPublicKey(path, hexSeed);
 ```
 <br>
 
-**signTransaction( seed, path, transaction )**
+**signTransaction( seed, path, transaction )** <br>
 In this example we will sign a transaction. Signing a transaction means that nobody can alter the content of the transaction without invalidating your signature.
 
 `seed`  A 256 bits hexadecimal string.
