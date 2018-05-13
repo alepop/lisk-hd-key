@@ -1,5 +1,6 @@
-Lisk HD Key
-=====
+<div align="center">
+  <img alt="lisk-hd-key" src="https://rawgit.com/lisk-builders/lisk-hd-key/master/logo.svg" height="109px" />
+</div>
 
 Key Derivation for Lisk coin
 ------------
