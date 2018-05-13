@@ -9,10 +9,11 @@
   ],
   "scripts": {
     "build": "tsc -p ./",
-    "test": "jest"
+    "test": "jest --coverage --coverageReporters=text-lcov | coveralls"
   },
   "jest": {
     "verbose": true,
+    "mapCoverage": true,
     "transform": {
       ".(ts|tsx)": "./node_modules/ts-jest/preprocessor.js"
     },
@@ -56,6 +57,7 @@
   },
   "dependencies": {
     "@types/node": "^10.0.3",
+    "coveralls": "^3.0.1",
     "ed25519-hd-key": "1.0.0",
     "lisk-elements": "1.0.0-beta.3"
   }
