@@ -9,7 +9,8 @@
   ],
   "scripts": {
     "build": "tsc -p ./",
-    "test": "jest --coverage --coverageReporters=text-lcov | coveralls"
+    "test:ci": "jest --coverage --coverageReporters=text-lcov | coveralls",
+    "test": "jest --watch --verbose"
   },
   "jest": {
     "verbose": true,
