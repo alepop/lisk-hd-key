@@ -88,10 +88,17 @@ const hexSeed = bip39.mnemonicToSeedHex(seed);
 
 /*
 {
-    path: 'm/44\'/134\'/0\'/0\'',
-    privateKey: 'b28c94b2195c8ed259f0b415aaee3f39b0b2920a4537611499fa044956917a219a51f1f85e894c612d65daf43996e843b665e5db622d57657ab842dd7efc8bcb',
-    publicKey: '9a51f1f85e894c612d65daf43996e843b665e5db622d57657ab842dd7efc8bcb',
-    address: '8963080315629587796L'
+  "amount": "25",
+  "recipientId": "1L",
+  "timestamp": 1525977822,
+  "type": 0,
+  "fee": "20000000",
+  "asset": {
+    "data": "Custom message to show i have signed the transaction."
+  },
+  "senderPublicKey": "e77da02e45ec11a36970582ead6811e278797a14f315a0a69a3efe9f6c7624b6",
+  "signature": "f6fb203848affe7c88f3b68bfefa012b9eb37581a34eb2b5b930d5045ab3575aab6ce9683bf16f85f63453481576ac08efd39f2b194121639b03c8b4aaf3060e",
+  "id": "403666780544575699"
 }
 */
 const signedTransaction = signTransaction(hexSeed, path, unsignedTransaction)
