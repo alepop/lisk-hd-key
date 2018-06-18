@@ -1,68 +1,57 @@
-import {
-    derivePath,
-    isValidateCoinType,
-    getDerivedPathData,
-    getDerivedPathKeys,
-} from './';
+import { signTransaction, getPublicKey } from './index';
+import { prepareTransaction } from './sign';
+import { derivePath } from './utils';
+import * as eded25519 from 'ed25519-hd-key';
 
-import * as ed25519 from 'ed25519-hd-key';
+const path = "m/44'/134'/0'/0'/0'";
+const hexSeed = '06bae687f0250ab9533be2ac9717ae2a802d69c97d547c2e862e66e05453b165cf3e06a649c826a6db3b702644dc1c9154ad3b4188b8c15848d83a87c1c48eca';
+const unsignedTransaction = {
+    "amount": "100000000000",
+    "recipientId": "666L",
+    "timestamp": 60225629,
+    "type": 0,
+    "fee": "20000000",
+    "asset": {
+        "data": "lol wat?"
+    }
+};
 
-const path = "m/44'/134'/0'/0'";
-const invalidPath = "m/44'/0'/0'/0'";
-const seed =
-    'fffcf9f6f3f0edeae7e4e1dedbd8d5d2cfccc9c6c3c0bdbab7b4b1aeaba8a5a29f9c999693908d8a8784817e7b7875726f6c696663605d5a5754514e4b484542';
-
-describe('Lisk HD key', () => {
-    describe('isValidateCoinType', () => {
-        it('should return false for invalid coun type', () => {
-            expect(isValidateCoinType(invalidPath)).toBeFalsy();
+describe('Main module', () => {
+    describe('signTransaction', () => {
+        beforeEach(() => {
+            (prepareTransaction as any) = jest.fn();
         });
-        it('should return true for valid coin type', () => {
-            expect(isValidateCoinType(path)).toBeTruthy();
-        });
-    });
-    describe('derivePath', () => {
-        beforeAll(() => {
-            (ed25519.derivePath as any) = jest.fn();
-        });
-
-        afterAll(() => {
-            (ed25519.derivePath as any).mockRestore();
+        afterEach(() => {
+            (prepareTransaction as any).mockRestore();
         });
 
-        it('should call derivePath from ed25519-hd-key package', () => {
-            derivePath(path, seed);
-            expect(ed25519.derivePath).toBeCalledWith(path, seed);
+        it('should add senderPublicKey field to transaction if it not exist', () => {
+            (prepareTransaction as any).mockReturnValue(unsignedTransaction);
+            const signedTransaction = signTransaction(hexSeed, path, unsignedTransaction);
+            expect(signedTransaction.senderPublicKey).toBeDefined();
         });
 
-        it('should throw Error for not Lisk coin type', () => {
-            expect(() => derivePath(invalidPath, seed)).toThrowError(
-                'Lisk coin type must be 134. https://github.com/satoshilabs/slips/blob/master/slip-0044.md',
+        it('should convert ed25519 32 byte -> NaCL 64 byte private key', () => {
+            const { key } = derivePath(path, hexSeed);
+            const publicKey = eded25519.getPublicKey(key, false);
+            signTransaction(hexSeed, path, unsignedTransaction);
+            expect(prepareTransaction).toBeCalledWith(
+                Object.assign(unsignedTransaction, { senderPublicKey: publicKey.toString('hex')}),
+                [...key, ...publicKey]
             );
         });
     });
-
-    describe('getDerivedPathKeys', () => {
-        it('should return valid data', () => {
-            expect(getDerivedPathKeys(path, seed)).toEqual({
-                publicKey:
-                    'e30cf4e31a16d98fa455c25e965f07313ddd4c7391f2c4d9a20fd0326eebe013',
-                privateKey:
-                    'eb045d78d273107348b0300c01d29b7552d622abbc6faf81b3ec55359aa9950ce30cf4e31a16d98fa455c25e965f07313ddd4c7391f2c4d9a20fd0326eebe013',
-            });
+    describe('getPublicKey', () => {
+        beforeAll(() => {
+            (eded25519.getPublicKey as any) = jest.fn();
         });
-    });
+        afterAll(() => {
+            (eded25519.getPublicKey as any).mockRestore();
+        });
 
-    describe('getDerivedPathData', () => {
-        it('should return valid data', () => {
-            expect(getDerivedPathData(path, seed)).toEqual({
-                path,
-                publicKey:
-                    'e30cf4e31a16d98fa455c25e965f07313ddd4c7391f2c4d9a20fd0326eebe013',
-                privateKey:
-                    'eb045d78d273107348b0300c01d29b7552d622abbc6faf81b3ec55359aa9950ce30cf4e31a16d98fa455c25e965f07313ddd4c7391f2c4d9a20fd0326eebe013',
-                address: '2016897913186254339L',
-            });
+        it('should call eded25519 getPublicKey method', () => {
+            getPublicKey(path, hexSeed);
+            expect(eded25519.getPublicKey).toBeCalled();
         });
     });
 });

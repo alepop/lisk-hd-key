@@ -1,34 +1,25 @@
-import {
-    getMasterKeyFromSeed as getMasterK,
-    derivePath as deriveP,
-} from 'ed25519-hd-key';
-import { crypto } from 'lisk-js';
+import { getPublicKey as getPubKey } from 'ed25519-hd-key';
+import { cryptography } from 'lisk-elements';
+import { derivePath } from './utils';
+import { prepareTransaction } from './sign';
 
-const COIN_TYPE = 134; // https://github.com/satoshilabs/slips/blob/master/slip-0044.md
-
-export const isValidateCoinType = (path: string) =>
-    parseInt(path.split('/')[2].replace("'", ''), 10) === COIN_TYPE;
-
-export const getMasterKeyFromSeed = getMasterK;
-
-export const derivePath = (path: string, seed: string) => {
-    if (!isValidateCoinType(path)) {
-        throw new Error(
-            `Lisk coin type must be ${COIN_TYPE}. https://github.com/satoshilabs/slips/blob/master/slip-0044.md`,
-        );
-    }
-    return deriveP(path, seed);
+export const getPublicKey = (path: string, seed: string) => {
+    const { key } = derivePath(path, seed);
+    return getPubKey(key, false);
 };
 
-export const getDerivedPathKeys = (path: string, seed: string) =>
-    crypto.getPrivateAndPublicKeyFromSecret(derivePath(path, seed));
+export const signTransaction = (seed: string, path: string, transaction) => {
+    const { key: privateKey } = derivePath(path, seed);
+    const publicKey = getPubKey(privateKey, false);
 
-export const getDerivedPathData = (path: string, seed: string) => {
-    const { privateKey, publicKey } = getDerivedPathKeys(path, seed);
-    return {
-        path,
-        privateKey,
-        publicKey,
-        address: crypto.getAddressFromPublicKey(publicKey),
-    };
+    if (!transaction.senderPublicKey) {
+        transaction.senderPublicKey = publicKey.toString('hex');
+    }
+
+    // ed25519 sk is 32 bytes long.
+    // NaCL use 64 bytes for signing keys. NaCL store public key as a part of private key
+    // https://crypto.stackexchange.com/a/54354
+    const sk = [...privateKey, ...publicKey];
+
+    return prepareTransaction(transaction, sk);
 };
