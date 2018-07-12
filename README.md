@@ -25,7 +25,7 @@ In this example we will get the public key for a Lisk address. The function shou
 
 `path`  Derived from [BIP0044](https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki) we use the same pattern. Extra information on the what and why of the parameter can be found on the given url.
 
-> m / purpose' / coin_type' / account' / change / address_index
+> m / purpose' / coin_type' / account' / change' / address_index'
 
 
 **Usage**
@@ -34,7 +34,7 @@ In this example we will get the public key for a Lisk address. The function shou
 const { getPublicKey } = require('lisk-hd-key');
 
 const bip39 = require('bip39');
-const path = "m/44'/134'/0'/0'";
+const path = "m/44'/134'/0'/0'/0'";
 
 // sunny settle rent arrive coast emotion twice outdoor erupt scale once reason
 const seed = bip39.generateMnemonic();
@@ -42,7 +42,7 @@ const seed = bip39.generateMnemonic();
 // 18e48e187b700d4596983f2efaf64f63c31ff13b4537abea1157bdf45c1fc9e5c5d8a817048616d24dcd0b7ae638df786cec2dc0749f6847724905988ae56b0e
 const hexSeed = bip39.mnemonicToSeedHex(seed);
 
-// 9a51f1f85e894c612d65daf43996e843b665e5db622d57657ab842dd7efc8bcb
+// <Buffer e7 7d a0 2e 45 ec 11 a3 69 70 58 2e ad 68 11 e2 78 79 7a 14 f3 15 a0 a6 9a 3e fe 9f 6c 76 24 b6>
 const publicKey = getPublicKey(path, hexSeed);
 ```
 <br>
@@ -55,7 +55,7 @@ In this example we will sign a transaction. Signing a transaction means that nob
 
 `path`  Derived from [BIP0044](https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki) we use the same pattern. Extra information on the what and why of the parameter can be found on the given url.
 
-> m / purpose' / coin_type' / account' / change / address_index
+> m / purpose' / coin_type' / account' / change' / address_index'
 
 
 `transaction`
@@ -67,7 +67,7 @@ This parameter is a [Lisk transaction object](https://lisk.io/documentation/the-
 const { signTransaction } = require('lisk-hd-key');
 
 const bip39 = require('bip39');
-const path = "m/44'/134'/0'/0'";
+const path = "m/44'/134'/0'/0'/0'";
 
 const unsignedTransaction = {
    "amount": "25",
