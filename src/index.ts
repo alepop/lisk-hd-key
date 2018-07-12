@@ -1,5 +1,4 @@
 import { getPublicKey as getPubKey } from 'ed25519-hd-key';
-import { cryptography } from 'lisk-elements';
 import { derivePath } from './utils';
 import { prepareTransaction } from './sign';
 
@@ -19,7 +18,7 @@ export const signTransaction = (seed: string, path: string, transaction) => {
     // ed25519 sk is 32 bytes long.
     // NaCL use 64 bytes for signing keys. NaCL store public key as a part of private key
     // https://crypto.stackexchange.com/a/54354
-    const sk = [...privateKey, ...publicKey];
+    const sk = Buffer.concat([privateKey, publicKey]);
 
     return prepareTransaction(transaction, sk);
 };
