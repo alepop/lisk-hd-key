@@ -1,11 +1,10 @@
 <div align="center">
-  <img alt="lisk-hd-key" src="https://rawgit.com/lisk-builders/lisk-hd-key/master/logo.svg" height="109px" />
+  <img alt="lisk-hd-key" src="https://rawgit.com/alepop/lisk-hd-key/master/logo.svg" height="109px" />
 </div>
 
 Lisk HD Key
 ============
-[![npm version](https://badge.fury.io/js/%40lisk-builders%2Flisk-hd-key.svg)](https://badge.fury.io/js/%40lisk-builders%2Flisk-hd-key)
-[![Coverage Status](https://coveralls.io/repos/github/lisk-builders/lisk-hd-key/badge.svg?branch=master)](https://coveralls.io/github/lisk-builders/lisk-hd-key?branch=master)<br>
+[![Coverage Status](https://coveralls.io/repos/github/alepop/lisk-hd-key/badge.svg?branch=master)](https://coveralls.io/github/alepop/lisk-hd-key?branch=master)
 A Typescript based module that provides addition functionality for the Key Derivation in the Lisk ecosystem.
 
 Installation
