@@ -37,7 +37,7 @@ describe('Main module', () => {
             signTransaction(hexSeed, path, unsignedTransaction);
             expect(prepareTransaction).toBeCalledWith(
                 Object.assign(unsignedTransaction, { senderPublicKey: publicKey.toString('hex')}),
-                [...key, ...publicKey]
+                Buffer.concat([key, publicKey])
             );
         });
     });
