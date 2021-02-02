@@ -1,5 +1,5 @@
 <div align="center">
-  <img alt="lisk-hd-key" src="https://rawgit.com/alepop/lisk-hd-key/master/logo.svg" height="109px" />
+  <img alt="lisk-hd-key" src="https://raw.githubusercontent.com/alepop/lisk-hd-key/master/logo.svg" height="109px" />
 </div>
 
 Lisk HD Key
