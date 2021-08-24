@@ -1,24 +1,20 @@
-import elements from 'lisk-elements';
-const {
-    cryptography,
-    transaction: { utils },
-} = elements;
+import * as cryptography from '@liskhq/lisk-cryptography';
+import * as transactions from '@liskhq/lisk-transactions';
+import { getTransactionSchema } from './liskSchemas';
 
-export const signTransaction = (transaction, privateKey) => {
-    const transactionHash = utils.getTransactionHash(transaction);
+export const signTransaction = (transaction, privateKey, networkIdentifier) => {
+    const TxSchema = getTransactionSchema(transaction);
+    const txSigningBytes = transactions.getSigningBytes(TxSchema.schema, transaction);
+    const tx = Buffer.concat([ networkIdentifier, txSigningBytes ]);
     return cryptography.signDataWithPrivateKey(
-        transactionHash,
+        tx,
         privateKey
     );
 };
 
-export const prepareTransaction = (transaction, privateKey) => {
+export const prepareTransaction = (transaction, privateKey, networkIdentifier) => {
     const signedTransaction = Object.assign({}, transaction, {
-        signature: signTransaction(transaction, privateKey)
+        signature: signTransaction(transaction, privateKey, networkIdentifier)
     })
-    const transactionWithId = Object.assign({}, signedTransaction, {
-        id: utils.getTransactionId(signedTransaction),
-    });
-
-    return transactionWithId;
+    return signedTransaction;
 };
