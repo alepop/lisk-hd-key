@@ -1,6 +1,6 @@
 {
   "name": "@lisk-builders/lisk-hd-key",
-  "version": "1.0.1-rc.0",
+  "version": "2.0.0",
   "description": "HD key derivation for Lisk coin",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -57,8 +57,8 @@
     "typescript": "2.6.2"
   },
   "dependencies": {
-    "@liskhq/lisk-transactions": "^5.1.1",
     "@liskhq/lisk-cryptography": "^3.1.0",
+    "@liskhq/lisk-transactions": "^5.1.1",
     "@types/node": "^10.0.3",
     "coveralls": "^3.0.1",
     "ed25519-hd-key": "^1.1.2"
