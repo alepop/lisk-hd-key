@@ -57,9 +57,10 @@
     "typescript": "2.6.2"
   },
   "dependencies": {
+    "@liskhq/lisk-transactions": "^5.1.1",
+    "@liskhq/lisk-cryptography": "^3.1.0",
     "@types/node": "^10.0.3",
     "coveralls": "^3.0.1",
-    "ed25519-hd-key": "^1.1.2",
-    "lisk-elements": "^1.0.0-rc.0"
+    "ed25519-hd-key": "^1.1.2"
   }
 }

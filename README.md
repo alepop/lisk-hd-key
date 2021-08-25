@@ -80,38 +80,45 @@ const bip39 = require('bip39');
 const path = "m/44'/134'/0'";
 
 const unsignedTransaction = {
-   "amount": "25",
-   "recipientId": "1L",
-    "timestamp": 1525977822,
-    "type": 0,
-    "fee": "20000000",
-    "asset": {
-       "data": "Custom message to show i have signed the transaction."
+    moduleID: 2,
+    assetID: 0,
+    nonce: BigInt(3),
+    fee: BigInt(100000),
+    senderPublicKey: Buffer.from(address, "hex"),
+    asset: {
+        amount: BigInt(100000000),
+        recipientAddress: Buffer.from(address, "hex"),
+        data: '',
     }
 };
 
 const doSignTest = async () => {
-    // sunny settle rent arrive coast emotion twice outdoor erupt scale once reason
     const seed = bip39.generateMnemonic();
-
-    // 18e48e187b700d4596983f2efaf64f63c31ff13b4537abea1157bdf45c1fc9e5c5d8a817048616d24dcd0b7ae638df786cec2dc0749f6847724905988ae56b0e
+    // or with your seed
+    // const seed = "bread stock include ...";
+    
+    // ex: 18e48e187b700d4596983f2efaf64f63c31ff13b4537abea1157bdf45c1fc9e5c5d8a817048616d24dcd0b7ae638df786cec2dc0749f6847724905988ae56b0e
     const hexSeed = await bip39.mnemonicToSeed(seed);
+    
+    // ex: <Buffer e7 7d a0 2e 45 ec 11 a3 69 70 58 2e ad 68 11 e2 78 79 7a 14 f3 15 a0 a6 9a 3e fe 9f 6c 76 24 b6>
+    const publicKey = getPublicKey(path, hexSeed);
+    // ex: <Buffer ad 68 11 e2 78 79 7a 14 f3 15 a0 a6 9a 3e fe 9f 6c 76 24 b6>
+    const address = cryptography.getAddressFromPublicKey(publicKey);
 
-    /*
-    {
-    "amount": "25",
-    "recipientId": "1L",
-    "timestamp": 1525977822,
-    "type": 0,
-    "fee": "20000000",
-    "asset": {
-        "data": "Custom message to show i have signed the transaction."
-    },
-    "senderPublicKey": "e77da02e45ec11a36970582ead6811e278797a14f315a0a69a3efe9f6c7624b6",
-    "signature": "f6fb203848affe7c88f3b68bfefa012b9eb37581a34eb2b5b930d5045ab3575aab6ce9683bf16f85f63453481576ac08efd39f2b194121639b03c8b4aaf3060e",
-    "id": "403666780544575699"
-    }
-    */
+    const unsignedTransaction = {
+        moduleID: 2,
+        assetID: 0,
+        nonce: BigInt(3),
+        fee: BigInt(100000),
+        senderPublicKey: address,
+        asset: {
+            amount: BigInt(100000000),
+            recipientAddress: address, // self-transfer
+            data: '',
+        }
+    };
+
+    // tx to be broadcasted
     const signedTransaction = signTransaction(hexSeed, path, unsignedTransaction)
 }
 
