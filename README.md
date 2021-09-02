@@ -74,7 +74,7 @@ This parameter is a [Lisk transaction object](https://lisk.io/documentation/the-
 **Usage**
 
 ```js
-const { signTransaction } = require('lisk-hd-key');
+const { prepareTransaction } = require('lisk-hd-key');
 
 const bip39 = require('bip39');
 const path = "m/44'/134'/0'";
@@ -91,6 +91,11 @@ const unsignedTransaction = {
         data: '',
     }
 };
+
+const networkIds = {
+  testnet: '15f0dacc1060e91818224a94286b13aa04279c640bd5d6f193182031d133df7c',
+  mainnet: '4c09e6a781fc4c7bdb936ee815de8f94190f8a7519becd9de2081832be309a99'
+}
 
 const doSignTest = async () => {
     const seed = bip39.generateMnemonic();
@@ -118,8 +123,10 @@ const doSignTest = async () => {
         }
     };
 
+    const mainnetNetworkIdentifier = Buffer.from(networkIds.mainnet, 'hex');
+
     // tx to be broadcasted
-    const signedTransaction = signTransaction(hexSeed, path, unsignedTransaction)
+    const signedTransaction = prepareTransaction(unsignedTransaction, hexSeed, mainnetNetworkIdentifier);
 }
 
 doSignTest();
