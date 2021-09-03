@@ -2,7 +2,9 @@ import * as cryptography from '@liskhq/lisk-cryptography';
 import * as transactions from '@liskhq/lisk-transactions';
 import { getTransactionSchema } from './liskSchemas';
 
-export const signTransaction = (transaction, privateKey, networkIdentifier) => {
+export const signTransaction = (transaction:any,
+                                privateKey: Buffer,
+                                networkIdentifier: Buffer) => {
     const TxSchema = getTransactionSchema(transaction);
     const txSigningBytes = transactions.getSigningBytes(TxSchema.schema, transaction);
     const tx = Buffer.concat([ networkIdentifier, txSigningBytes ]);
@@ -12,7 +14,9 @@ export const signTransaction = (transaction, privateKey, networkIdentifier) => {
     );
 };
 
-export const prepareTransaction = (transaction, privateKey, networkIdentifier) => {
+export const prepareTransaction = (transaction: any, 
+                                   privateKey: Buffer,
+                                   networkIdentifier: Buffer) => {
     const signedTransaction = Object.assign({}, transaction, {
         signature: signTransaction(transaction, privateKey, networkIdentifier)
     })

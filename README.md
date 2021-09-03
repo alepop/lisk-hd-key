@@ -39,24 +39,29 @@ const bip39 = require('bip39');
 const path = "m/44'/134'/0'";
 
 const doPubKeyTest = async () => {
-    // sunny settle rent arrive coast emotion twice outdoor erupt scale once reason
     const seed = bip39.generateMnemonic();
-    
+    // or custom seed
+    // const seed = "future dose defense ..."
+
     // 18e48e187b700d4596983f2efaf64f63c31ff13b4537abea1157bdf45c1fc9e5c5d8a817048616d24dcd0b7ae638df786cec2dc0749f6847724905988ae56b0e
     const hexSeed = await bip39.mnemonicToSeed(seed);
     
     // <Buffer e7 7d a0 2e 45 ec 11 a3 69 70 58 2e ad 68 11 e2 78 79 7a 14 f3 15 a0 a6 9a 3e fe 9f 6c 76 24 b6>
     const publicKey = getPublicKey(path, hexSeed);
+    console.info('publicKey', publicKey);
+    console.info('publicKey hex', publicKey.toString('hex'));
+    
 }
 
 doPubKeyTest();
 ```
 <br>
 
-**signTransaction( seed, path, transaction )** <br>
+**signTransaction( seed, path, transaction, networkId = liskMainnet )** <br>
 In this example we will sign a transaction. Signing a transaction means that nobody can alter the content of the transaction without invalidating your signature.
 
 `seed`  A 256 bits hexadecimal string.
+Ex:
 > 06bae687f0250ab9533be2ac9717ae2a802d69c97d5..
 
 `path`  Derived from [BIP0044](https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki) we use the same pattern. Extra information on the what and why of the parameter can be found on the given url.
@@ -67,35 +72,26 @@ In this example we will sign a transaction. Signing a transaction means that nob
 
 > m / purpose' / coin_type' / account'
 
+The apostrophe means that the index is hardened.
 
 `transaction`
-This parameter is a [Lisk transaction object](https://lisk.io/documentation/the-lisk-protocol/transactions). It can have the same properties as a transaction described in the given url.
+This parameter is a [Lisk transaction object](https://lisk.com/documentation/lisk-sdk/guides/node-management/signing-transactions-offline.html). It can have the same properties as a transaction described in the given url.
+
+`networkId` (Lisk mainnet if not provided)
+the network identifier (as string) of the target chain. By default Lisk Mainnet is used.
+Ex:
+> 4c09e6a781fc4c7bdb936ee815de8f94190f8a7519becd9de2081832be309a99"
+> 
+(Lisk Mainnet)
 
 **Usage**
 
 ```js
-const { prepareTransaction } = require('lisk-hd-key');
+const { getPublicKey, signTransaction } = require('lisk-hd-key');
 
 const bip39 = require('bip39');
 const path = "m/44'/134'/0'";
 
-const unsignedTransaction = {
-    moduleID: 2,
-    assetID: 0,
-    nonce: BigInt(3),
-    fee: BigInt(100000),
-    senderPublicKey: Buffer.from(address, "hex"),
-    asset: {
-        amount: BigInt(100000000),
-        recipientAddress: Buffer.from(address, "hex"),
-        data: '',
-    }
-};
-
-const networkIds = {
-  testnet: '15f0dacc1060e91818224a94286b13aa04279c640bd5d6f193182031d133df7c',
-  mainnet: '4c09e6a781fc4c7bdb936ee815de8f94190f8a7519becd9de2081832be309a99'
-}
 
 const doSignTest = async () => {
     const seed = bip39.generateMnemonic();
@@ -115,7 +111,7 @@ const doSignTest = async () => {
         assetID: 0,
         nonce: BigInt(3),
         fee: BigInt(100000),
-        senderPublicKey: address,
+        senderPublicKey: publicKey, // If not provided, it will be set automatically
         asset: {
             amount: BigInt(100000000),
             recipientAddress: address, // self-transfer
@@ -123,10 +119,8 @@ const doSignTest = async () => {
         }
     };
 
-    const mainnetNetworkIdentifier = Buffer.from(networkIds.mainnet, 'hex');
-
     // tx to be broadcasted
-    const signedTransaction = prepareTransaction(unsignedTransaction, hexSeed, mainnetNetworkIdentifier);
+    const signedTransaction = signTransaction(hexSeed, path, unsignedTransaction);
 }
 
 doSignTest();
