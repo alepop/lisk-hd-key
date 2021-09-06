@@ -3,6 +3,7 @@ import { prepareTransaction } from './sign';
 import { derivePath } from './utils';
 import * as eded25519 from 'ed25519-hd-key';
 
+export const liskMainnetNetworkId = '4c09e6a781fc4c7bdb936ee815de8f94190f8a7519becd9de2081832be309a99';
 const path = "m/44'/134'/0'/0'/0'";
 const hexSeed = '06bae687f0250ab9533be2ac9717ae2a802d69c97d547c2e862e66e05453b165cf3e06a649c826a6db3b702644dc1c9154ad3b4188b8c15848d83a87c1c48eca';
 const unsignedTransaction = {
@@ -37,7 +38,8 @@ describe('Main module', () => {
             signTransaction(hexSeed, path, unsignedTransaction);
             expect(prepareTransaction).toBeCalledWith(
                 Object.assign(unsignedTransaction, { senderPublicKey: publicKey.toString('hex')}),
-                Buffer.concat([key, publicKey])
+                Buffer.concat([key, publicKey]),
+                Buffer.from(liskMainnetNetworkId, 'hex')
             );
         });
     });
