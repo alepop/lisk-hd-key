@@ -14,11 +14,11 @@ export const signTransaction = (transaction:any,
     );
 };
 
-export const prepareTransaction = (transaction: any, 
+export const prepareTransaction = (transaction: any,
                                    privateKey: Buffer,
                                    networkIdentifier: Buffer) => {
     const signedTransaction = Object.assign({}, transaction, {
-        signature: signTransaction(transaction, privateKey, networkIdentifier)
+        signatures: [signTransaction(transaction, privateKey, networkIdentifier)]
     })
     return signedTransaction;
 };
