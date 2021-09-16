@@ -1,3 +1,5 @@
+import { sign } from 'crypto';
+
 jest.mock('@liskhq/lisk-cryptography');
 jest.mock('@liskhq/lisk-transactions');
 jest.mock('./liskSchemas');
@@ -9,7 +11,7 @@ import { signTransaction, prepareTransaction } from './';
 const txSigningBytes = Buffer.from('0x08');
 const privateKey = Buffer.from('privateKey');
 const networkIdentifier = Buffer.from('networkIdentifier');
-const signature = Buffer.concat([ networkIdentifier, txSigningBytes ]);
+const signatures = Buffer.concat([ networkIdentifier, txSigningBytes ]);
 
 describe('Sign', () => {
     describe('signTransaction', () => {
@@ -24,13 +26,13 @@ describe('Sign', () => {
 
         it('should call cryptography.signDataWithPrivateKey', () => {
             signTransaction({}, privateKey, networkIdentifier);
-            expect(cryptography.signDataWithPrivateKey).toBeCalledWith(signature, privateKey)
+            expect(cryptography.signDataWithPrivateKey).toBeCalledWith(signatures, privateKey)
         });
     });
 
     describe('prepareTransaction', () => {
         beforeAll(() => {
-            (signTransaction as any) = jest.fn(() => signature);
+            (signTransaction as any) = jest.fn(() => signatures);
         });
         afterAll(() => {
             (signTransaction as any).mockRestore();
@@ -41,7 +43,7 @@ describe('Sign', () => {
         });
 
         it('should return transaction with signature field', () => {
-            expect(prepareTransaction({}, privateKey, networkIdentifier)).toEqual({ signature })
+            expect(prepareTransaction({}, privateKey, networkIdentifier)).toEqual({ signatures: [signatures] })
         })
     });
 });
