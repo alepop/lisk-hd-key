@@ -87,7 +87,7 @@ Ex:
 **Usage**
 
 ```js
-const { getPublicKey, signTransaction } = require('lisk-hd-key');
+const { getPublicKey, signTransaction, getBroadcastBytes } = require('lisk-hd-key');
 
 const bip39 = require('bip39');
 const path = "m/44'/134'/0'";
@@ -121,6 +121,8 @@ const doSignTest = async () => {
 
     // tx to be broadcasted
     const signedTransaction = signTransaction(hexSeed, path, unsignedTransaction);
+    // get bytes to be broadcasted
+    const txBroadcastBytes = getBroadcastBytes(signedTransaction);
 }
 
 doSignTest();

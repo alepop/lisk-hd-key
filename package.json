@@ -52,6 +52,7 @@
   "homepage": "https://github.com/lisk-builders/lisk-hd-key",
   "devDependencies": {
     "@types/jest": "27.0.1",
+    "coveralls": "^3.1.1",
     "jest-cli": "27.1.0",
     "ts-jest": "27.0.5",
     "typescript": "4.4.2"
@@ -60,7 +61,6 @@
     "@liskhq/lisk-cryptography": "^3.1.0",
     "@liskhq/lisk-transactions": "^5.1.1",
     "@types/node": "^16.7.10",
-    "coveralls": "^3.1.1",
     "ed25519-hd-key": "^1.2.0"
   }
 }

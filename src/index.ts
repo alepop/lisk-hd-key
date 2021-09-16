@@ -1,6 +1,6 @@
 import { getPublicKey as getPubKey } from 'ed25519-hd-key';
 import { derivePath } from './utils';
-import { prepareTransaction } from './sign';
+import { prepareTransaction, getBytesToBroadcast} from './sign';
 
 export const LISK_MAINNET_NETWORK_ID = '4c09e6a781fc4c7bdb936ee815de8f94190f8a7519becd9de2081832be309a99';
 
@@ -28,3 +28,5 @@ export const signTransaction = (seed: string,
 
     return prepareTransaction(transaction, sk, networkIdBuffer);
 };
+
+export const getBroadcastBytes = getBytesToBroadcast;
