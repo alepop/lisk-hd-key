@@ -1,6 +1,6 @@
 {
   "name": "@lisk-builders/lisk-hd-key",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "description": "HD key derivation for Lisk coin",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
