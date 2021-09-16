@@ -6,9 +6,10 @@ jest.mock('./liskSchemas');
 import * as cryptography from '@liskhq/lisk-cryptography';
 import * as transactions from '@liskhq/lisk-transactions';
 import * as liskSchemas from './liskSchemas';
-import { signTransaction, prepareTransaction } from './';
+import { signTransaction, prepareTransaction, getBytesToBroadcast } from './';
 
 const txSigningBytes = Buffer.from('0x08');
+const txBroadcastBytes = Buffer.from('0x09');
 const privateKey = Buffer.from('privateKey');
 const networkIdentifier = Buffer.from('networkIdentifier');
 const signatures = Buffer.concat([ networkIdentifier, txSigningBytes ]);
@@ -43,7 +44,19 @@ describe('Sign', () => {
         });
 
         it('should return transaction with signature field', () => {
-            expect(prepareTransaction({}, privateKey, networkIdentifier)).toEqual({ signatures: [signatures] })
+            expect(prepareTransaction({}, privateKey, networkIdentifier)).toEqual({ signatures: [ signatures ] })
         })
+    });
+
+    describe('getBytesToBroadcast', () => {
+        beforeAll(() => {
+            jest.spyOn(transactions, 'getBytes').mockReturnValue(txBroadcastBytes)
+            jest.spyOn(liskSchemas, 'getTransactionSchema').mockReturnValue(liskSchemas.TransferAssetSchema)
+        })
+        it('should call transactions.getBytes method', () => {
+            const txBytes = getBytesToBroadcast({});
+            expect(transactions.getBytes).toBeCalled();
+            expect(txBytes).toEqual(txBroadcastBytes)
+        });
     });
 });
